@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Botanical Garden | Baguio Track</title>
+
+<link rel="stylesheet" href="../assets/css/home.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<style>
+
+a,
+a:hover,
+a:focus,
+a:active{
+  text-decoration:none !important;
+  color:inherit;
+}
+
+body{
+  margin:0;
+  padding-top:90px;
+  font-family:"Poppins", sans-serif;
+  background:#f3ebdb;
+  color:#2c2c2c;
+}
+
+/* ===== NAVBAR SAME AS HOME PAGE ===== */
+
+header{
+  background:#145532;
+  color:#fff;
+  padding:16px 45px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 2px 4px rgba(0,0,0,0.1);
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  z-index:1000;
+  box-sizing:border-box;
+}
+
+.logo-area{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.logo-area img{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+}
+
+header h2{
+  margin:0;
+  font-size:22px;
+  font-weight:600;
+}
+
+nav{
+  display:flex;
+  gap:30px;
+}
+
+nav a{
+  color:white;
+  font-weight:500;
+  text-decoration:none;
+  font-size:16px;
+}
+
+nav a.active,
+nav a:hover{
+  color:#f2d7b5;
+}
+
+/* ===== PAGE CONTENT ===== */
+
+main{
+  max-width:1280px;
+  margin:25px auto;
+  padding:0 20px;
+  box-sizing:border-box;
+}
+
+.top-grid{
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:25px;
+  margin-bottom:25px;
+}
+
+.hero-image-wrapper{
+  position:relative;
+  width:100%;
+  height:330px;
+  overflow:hidden;
+  border-radius:12px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.15);
+}
+
+.hero-side-img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  cursor:pointer;
+  display:block;
+}
+
+.hero-arrow{
+  position:absolute;
+  top:50%;
+  font-size:40px;
+  background:rgba(0,0,0,0.25);
+  border:none;
+  color:white;
+  cursor:pointer;
+  transform:translateY(-50%);
+  z-index:5;
+  padding:6px 12px;
+  border-radius:6px;
+  opacity:0.6;
+  transition:0.3s;
+}
+
+.hero-arrow:hover{
+  opacity:1;
+  background:rgba(0,0,0,0.5);
+}
+
+.hero-arrow.left{
+  left:10px;
+}
+
+.hero-arrow.right{
+  right:10px;
+}
+
+.card{
+  background:#fff;
+  padding:22px;
+  border-radius:12px;
+  box-shadow:0 3px 8px rgba(0,0,0,0.1);
+}
+
+.card h3{
+  margin-top:0;
+  color:#154d2e;
+}
+
+.title{
+  font-size:32px;
+  color:#154d2e;
+  font-weight:700;
+  margin-bottom:8px;
+}
+
+.subtitle{
+  font-size:15px;
+  color:#666;
+  margin-top:0;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:25px;
+  margin-top:25px;
+}
+
+#realMap{
+  width:100%;
+  height:350px;
+  border-radius:10px;
+  margin-top:15px;
+}
+
+.back{
+  display:inline-block;
+  margin-top:20px;
+  padding:10px 14px;
+  background:#145532;
+  color:#fff !important;
+  border-radius:6px;
+  text-decoration:none;
+}
+
+.back:hover{
+  background:#187842;
+}
+
+/* ===== LIGHTBOX ===== */
+
+#imgPopup{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.75);
+  justify-content:center;
+  align-items:center;
+  z-index:3000;
+}
+
+#imgPopup img{
+  width:90%;
+  max-width:900px;
+  max-height:85vh;
+  border-radius:12px;
+  object-fit:cover;
+}
+
+#closePopup{
+  position:fixed;
+  top:25px;
+  right:40px;
+  font-size:38px;
+  color:#fff;
+  cursor:pointer;
+  z-index:3001;
+}
+
+#prevBtn,
+#nextBtn{
+  position:absolute;
+  top:50%;
+  font-size:40px;
+  background:rgba(0,0,0,0.25);
+  border:none;
+  color:white;
+  cursor:pointer;
+  transform:translateY(-50%);
+  z-index:3001;
+  padding:6px 12px;
+  border-radius:6px;
+  opacity:0.6;
+  transition:0.3s;
+}
+
+#prevBtn:hover,
+#nextBtn:hover{
+  opacity:1;
+  background:rgba(0,0,0,0.5);
+}
+
+#prevBtn{
+  left:20px;
+}
+
+#nextBtn{
+  right:20px;
+}
+
+@media (max-width:900px){
+  .grid,
+  .top-grid{
+    grid-template-columns:1fr;
+  }
+
+  .hero-image-wrapper{
+    height:250px;
+  }
+
+  body{
+    padding-top:130px;
+  }
+
+  header{
+    flex-direction:column;
+    gap:12px;
+    padding:16px 20px;
+  }
+
+  nav{
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:16px;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<script>
+if(localStorage.getItem("isLoggedIn") !== "true"){
+  window.location.href="index.html";
+}
+</script>
+
+<header>
+
+  <div class="logo-area" id="profileArea">
+    <img src="../assets/images/user_8801434.png" id="profileImage">
+    <h2 id="userName">Baguio Track</h2>
+
+    <input type="file" id="upload-photo" accept="image/*" style="display:none;">
+
+    <div class="profile-dropdown" id="profileDropdown">
+      <ul>
+        <li><a href="#" id="editProfile">✏️ Edit Profile</a></li>
+        <li><a href="#" id="logoutBtn">🚪 Logout</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="tourist.html" class="active">Tourist Spots</a>
+    <a href="jeepterminal.html">Terminals</a>
+    <a href="safety.html">Safety Tips</a>
+    <a href="about.html">About</a>
+  </nav>
+
+</header>
+
+<main>
+
+  <div class="top-grid">
+    <div class="hero-image-wrapper">
+      <button class="hero-arrow left" id="heroPrev">❮</button>
+      <img src="../assets/images/botanicalpic.png" class="hero-side-img" id="openImage" alt="Botanical Garden">
+      <button class="hero-arrow right" id="heroNext">❯</button>
+    </div>
+
+    <div class="card">
+      <h3>Visitor Information</h3>
+      <p><strong>📍 Location:</strong> Leonard Wood Road, Baguio City</p>
+      <p><strong>💰 Entrance Fee:</strong> ₱100</p>
+      <p><strong>🕕 Opening Hours:</strong> 6:00 AM – 6:00 PM</p>
+      <p><strong>📌 Highlights:</strong> Cultural villages • Sculptures • Walking paths</p>
+    </div>
+  </div>
+
+  <h1 class="title">Discover the Serenity of Botanical Garden</h1>
+  <p class="subtitle">Experience nature, culture, and peace in the heart of Baguio City.</p>
+
+  <div class="grid">
+    <div>
+      <div class="card">
+        <h3>About Botanical Garden</h3>
+        <p>
+          The Botanical Garden in Baguio City is a beautiful mix of native and international plants,
+          sculptures, and peaceful walking paths.
+        </p>
+      </div>
+
+      <div class="card" style="margin-top:20px;">
+        <h3>Map Location</h3>
+        <div id="realMap"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <h3>Nearby Attractions</h3>
+        <ul>
+          <li>☕ Snooze Coffee</li>
+          <li>🍴 Pine Country Steak &amp; Waffles</li>
+          <li>🏞️ Pacdal Circle Park</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <a href="tourist.html" class="back">← Back to Tourist Spots</a>
+</main>
+
+<div id="imgPopup">
+  <span id="closePopup">&times;</span>
+  <button id="prevBtn">❮</button>
+  <img id="popupImage" src="../assets/images/botanicalpic.png" alt="Preview">
+  <button id="nextBtn">❯</button>
+</div>
+
+<script src="../assets/js/profile-tabs.js"></script>
+
+<script>
+const images = [
+  "../assets/images/botanicalpic.png",
+  "../assets/images/bg2.jpg",
+  "../assets/images/bg3.png",
+  "../assets/images/bg4.jpg",
+  "../assets/images/bg5.jpg"
+];
+
+let currentIndex = 0;
+
+const heroImg = document.getElementById("openImage");
+const popup = document.getElementById("imgPopup");
+const popupImg = document.getElementById("popupImage");
+const heroPrev = document.getElementById("heroPrev");
+const heroNext = document.getElementById("heroNext");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const closePopup = document.getElementById("closePopup");
+
+function updateImages(){
+  heroImg.src = images[currentIndex];
+  popupImg.src = images[currentIndex];
+}
+
+function nextImage(){
+  currentIndex = (currentIndex + 1) % images.length;
+  updateImages();
+}
+
+function prevImage(){
+  currentIndex = (currentIndex - 1 + images.length) % images.length;
+  updateImages();
+}
+
+heroNext.onclick = (e) => {
+  e.stopPropagation();
+  nextImage();
+};
+
+heroPrev.onclick = (e) => {
+  e.stopPropagation();
+  prevImage();
+};
+
+heroImg.onclick = () => {
+  popup.style.display = "flex";
+  updateImages();
+};
+
+nextBtn.onclick = (e) => {
+  e.stopPropagation();
+  nextImage();
+};
+
+prevBtn.onclick = (e) => {
+  e.stopPropagation();
+  prevImage();
+};
+
+closePopup.onclick = () => {
+  popup.style.display = "none";
+};
+
+popup.onclick = (e) => {
+  if(e.target === popup){
+    popup.style.display = "none";
+  }
+};
+
+document.addEventListener("keydown", (e) => {
+  if(e.key === "ArrowRight") nextImage();
+  if(e.key === "ArrowLeft") prevImage();
+  if(e.key === "Escape") popup.style.display = "none";
+});
+
+updateImages();
+
+const map = L.map("realMap");
+
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 19
+}).addTo(map);
+
+const locations = [
+  { name: "🌿 <b>Baguio Botanical Garden</b>", coords: [16.4150, 120.6130] },
+  { name: "☕ Snooze Coffee", coords: [16.4150, 120.6124] },
+  { name: "🍴 Pine Country Steak & Waffles", coords: [16.4149, 120.6122] },
+  { name: "🏞️ Pacdal Circle Park", coords: [16.4163, 120.6153] }
+];
+
+locations.forEach(place => {
+  L.marker(place.coords).addTo(map).bindPopup(place.name);
+});
+
+map.setView([16.4150, 120.6130], 15);
+
+setTimeout(() => {
+  map.invalidateSize();
+}, 300);
+</script>
+
+</body>
+</html>
