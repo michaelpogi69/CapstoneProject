@@ -8,21 +8,34 @@
   <link rel="stylesheet" href="../assets/css/home.css" />
 
   <style>
-    :root {
-      --header-height: 90px;
-    }
+      :root {
+        --header-height: 72px;
+      }
 
-    body {
-      margin: 0;
-      font-family: "Poppins", sans-serif;
-      color: #111827;
-      background: #f3f4f6;
-      background: url("../assets/images/123.jpg") no-repeat center center fixed;
-      background-size: cover;
-      padding-top: var(--header-height);
-    }
+      html, body {
+        height: 100%;
+      }
 
-    header {
+      body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        color: #111827;
+        background: url("../assets/images/123.jpg") no-repeat center center fixed;
+        background-size: cover;
+        padding-top: var(--header-height);
+        display: flex;
+        flex-direction: column;
+      }
+
+      main.portal-content {
+        flex: 1 0 auto;
+      }
+
+      footer {
+        flex-shrink: 0;
+      }
+
+      header {
       background: linear-gradient(90deg, #263238, #37474f);
       color: white;
       padding: 15px 50px;
@@ -33,7 +46,7 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: var(--header-height);
+      min-height: 72px;
       z-index: 1000;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
     }
@@ -81,6 +94,14 @@
     nav a:hover,
     nav a.active {
       color: #f2d7b5;
+    }
+
+    a,
+    a:hover,
+    a:focus,
+    a:active{
+      text-decoration:none !important;
+      color:inherit;
     }
 
     main.portal-content {
@@ -286,9 +307,19 @@
 
 <body>
 
+<script>
+if(localStorage.getItem("isLoggedIn") !== "true"){
+  window.location.href="index.html";
+}
+</script>
+
 <header>
-  <div class="logo-area">
-    <img src="../assets/images/user_8801434.png" id="profileImage">
+  <div class="logo-area" id="profileArea">
+    <img
+      src="../assets/images/user_8801434.png"
+      id="profileImage"
+      alt="Profile"
+    >
     <h2 id="userName">User</h2>
   </div>
 
@@ -310,12 +341,17 @@
 
   <aside class="filters-panel">
     <div class="filter-group">
+      <label for="search-attraction">Search</label>
+      <input type="search" id="search-attraction" placeholder="Search attractions..." />
+    </div>
+
+    <div class="filter-group">
       <label>Categories</label>
       <div class="checkbox-group">
-        <label class="checkbox-item"><input type="checkbox"> Nature</label>
-        <label class="checkbox-item"><input type="checkbox"> Parks</label>
-        <label class="checkbox-item"><input type="checkbox"> Food</label>
-        <label class="checkbox-item"><input type="checkbox"> Historical</label>
+        <label class="checkbox-item"><input type="checkbox" value="Nature" checked> Nature</label>
+        <label class="checkbox-item"><input type="checkbox" value="Park" checked> Park</label>
+        <label class="checkbox-item"><input type="checkbox" value="Culture" checked> Culture</label>
+        <label class="checkbox-item"><input type="checkbox" value="Landmark" checked> Landmark</label>
       </div>
     </div>
 
@@ -331,7 +367,7 @@
 
       <!-- Mirador -->
       <div class="attraction-card">
-        <img class="attraction-image" src="../assets/images/park.jpg" alt="Mirador Heritage and Eco Park">
+        <img class="attraction-image" src="https://i.pinimg.com/736x/11/50/aa/1150aa2cd209123f65ae4af4bb5911f9.jpg" alt="Mirador Heritage and Eco Park">
 
         <div class="attraction-body">
           <div>
@@ -356,7 +392,7 @@
 
         <div class="attraction-body">
           <div>
-            <span class="category-link">Park</span>
+            <span class="category-link">Nature</span>
             <h2 class="attraction-title">Botanical Garden</h2>
             <p class="location">Gibraltar Rd, Baguio City</p>
             <p class="card-description">
@@ -454,7 +490,149 @@
         </div>
       </div>
     </div>
+        <div class="attraction-card">
+        <img class="attraction-image" src="https://i.pinimg.com/1200x/18/a5/28/18a5289c26005e8d1480cb4aef29950b.jpg" alt="Camp John Hay">
 
+        <div class="attraction-body">
+          <div>
+            <span class="category-link">Culture</span>
+            <h2 class="attraction-title">Good Shepherd Convent</h2>
+            <p class="location">Good Shepherd, Baguio City</p>
+            <p class="card-description">
+              Famous for ube jam and local pasalubong, this convent is a scenic stop for shopping, snacks, and quiet reflection.
+            </p>
+          </div>
+
+          <div class="card-actions">
+            <a class="card-button" href="goodshepherd.html">View Details</a>
+            <a class="card-link" href="jeepterminal.html">Directions</a>
+          </div>
+        </div>
+      </div>
+        <div class="attraction-card">
+        <img class="attraction-image" src="../assets/images/lion.webp" alt="Camp John Hay">
+
+        <div class="attraction-body">
+          <div>
+            <span class="category-link">Landmark</span>
+            <h2 class="attraction-title">Lions Head</h2>
+            <p class="location">Kennon Road, near Barangay Calasungay, Tuba, Benguet</p>
+            <p class="card-description">
+              The Lion’s Head along Kennon Road is a famous roadside landmark in Benguet, Philippines, carved into the mountainside as a large lion’s head sculpture.
+            </p>
+          </div>
+
+          <div class="card-actions">
+            <a class="card-button" href=".html">View Details</a>
+            <a class="card-link" href="jeepterminal.html">Directions</a>
+          </div>
+        </div>
+      </div>
+              <div class="attraction-card">
+        <img class="attraction-image" src="https://i.pinimg.com/1200x/90/ad/e5/90ade57f70358c88c020cb78fd4d4b00.jpg" alt="Camp John Hay">
+
+        <div class="attraction-body">
+          <div>
+            <span class="category-link">Landmark</span>
+            <h2 class="attraction-title">Diplomat Hotel</h2>
+            <p class="location"> Dominican Hill, Diplomat Road, Baguio, 2600 Benguet</p>
+            <p class="card-description">
+              This hotel holds a lot of history, from being a seminary to a hotel, and now a popular tourist attraction known for its architecture and ghost stories.
+            </p>
+          </div>
+
+          <div class="card-actions">
+            <a class="card-button" href=".html">View Details</a>
+            <a class="card-link" href="jeepterminal.html">Directions</a>
+          </div>
+        </div>
+      </div>
+       <div class="attraction-card">
+        <img class="attraction-image" src="https://i.pinimg.com/1200x/9e/a1/9d/9ea19da330f29c25a4f5f920f46e466d.jpg" alt="Camp John Hay">
+      <div class="attraction-body">
+          <div>
+            <span class="category-link">Park</span>
+            <h2 class="attraction-title">Wright Park</h2>
+            <p class="location"> The Mansion, Romulo Dr, Baguio, Benguet</p>
+            <p class="card-description">
+               The park is a favorite spot for tourists and locals to enjoy leisurely walks, take photos, and experience the cool mountain air.
+            </p>
+          </div>
+          <div class="card-actions">
+            <a class="card-button" href=".html">View Details</a>
+            <a class="card-link" href="jeepterminal.html">Directions</a>
+          </div>
+        </div>
+      </div>
+        <div class="attraction-card">
+        <img class="attraction-image" src="https://i.pinimg.com/736x/f2/48/81/f248816e6f5950cb5ab481af89c95e5d.jpg" alt="Camp John Hay">
+      <div class="attraction-body">
+          <div>
+            <span class="category-link">Culture</span>
+            <h2 class="attraction-title">Igorot Stone Kingdom</h2>
+            <p class="location"> Long Long Road, Pinsao Proper, Baguio City</p>
+            <p class="card-description">
+               The park celebrates Igorot culture through the traditional “riprap” stone-laying technique, which involves stacking stones without cement to create durable structures 
+
+          </div>
+          <div class="card-actions">
+            <a class="card-button" href=".html">View Details</a>
+            <a class="card-link" href="jeepterminal.html">Directions</a>
+          </div>
+        </div>
+      </div>
+      <div class="attraction-card">
+        <img class="attraction-image" src="https://lakbaypinas.com/wp-content/uploads/2025/02/471333542_122116129676614614_476453595541820013_n-1536x864.jpg" alt="Camp John Hay">
+      <div class="attraction-body">
+          <div>
+            <span class="category-link">Culture</span>
+            <h2 class="attraction-title">Dragon Treasure Castle</h2>
+            <p class="location"> Block 8, Irisville Subdivision Baguio City, Benguet</p>
+            <p class="card-description">
+               Dragon Treasure Castle is worth visiting if you want dramatic photos, fantasy-style architecture, and a short Baguio side trip that feels different from the usual city stops.
+
+          </div>
+          <div class="card-actions">
+            <a class="card-button" href=".html">View Details</a>
+            <a class="card-link" href="jeepterminal.html">Directions</a>
+          </div>
+        </div>
+      </div>
+      <div class="attraction-card">
+        <img class="attraction-image" src="https://i.pinimg.com/1200x/35/67/2c/35672c91f7f83f36499f5117c76f78d1.jpg" alt="Camp John Hay">
+      <div class="attraction-body">
+          <div>
+            <span class="category-link">Culture</span>
+            <h2 class="attraction-title">Tam-Awan Village</h2>
+            <p class="location">  Long Long Benguet Rd, Baguio City, Benguet</p>
+            <p class="card-description">
+               Tam-Awan Village holds its true values and culture of the Cordilleran heritage.
+
+          </div>
+          <div class="card-actions">
+            <a class="card-button" href=".html">View Details</a>
+            <a class="card-link" href="jeepterminal.html">Directions</a>
+          </div>
+        </div>
+      </div>
+      <div class="attraction-card">
+        <img class="attraction-image" src="https://i.pinimg.com/736x/33/45/08/334508be47f39d2f03b6ba791a11a97e.jpg" alt="Camp John Hay">
+      <div class="attraction-body">
+          <div>
+            <span class="category-link">Culture</span>
+            <h2 class="attraction-title">Bell Church</h2>
+            <p class="location"> Bell Church Rd, La Trinidad, Benguet </p>
+            <p class="card-description">
+              Bell Church is a Chinese temple known for its colorful architecture, serene gardens, and cultural significance to the local Chinese-Filipino community.
+
+          </div>
+          <div class="card-actions">
+            <a class="card-button" href=".html">View Details</a>
+            <a class="card-link" href="jeepterminal.html">Directions</a>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
 </div>
@@ -534,7 +712,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const username = userEmail.split('@')[0];
     if (userNameElement) userNameElement.textContent = username;
   } else {
-    window.location.href = "signup.html";
+    window.location.href = "index.html";
   }
 
   if (storedImage && profileImage) {
