@@ -1059,7 +1059,7 @@ main.portal-content {
   font-weight: 500;
 }
 
-/* Travel Tips Section */
+/* ================= TRAVEL TIPS ================= */
 .travel-tips {
   background: #ffffff;
   padding: 80px 40px;
@@ -1075,29 +1075,18 @@ main.portal-content {
   margin-top: 50px;
 }
 
+/* TIP CARD (FIXED HOVER) */
 .tip-card {
   background: #ffffff;
   padding: 30px;
   border-radius: 16px;
   box-shadow: 0 8px 25px rgba(18, 24, 31, 0.08);
-  transition: all 0.4s ease;
-  border-left: 5px solid #263238;
-  position: relative;
-}
-
-.tip-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: #263238;
-  border-radius: 16px 16px 0 0;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .tip-card:hover {
-  transform: translateY(-8px);
+  transform: translateY(-10px);
   box-shadow: 0 15px 40px rgba(18, 24, 31, 0.12);
 }
 
