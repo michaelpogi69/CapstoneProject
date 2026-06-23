@@ -8,11 +8,18 @@
   <link rel="stylesheet" href="../assets/css/home.css" />
 
   <style>
+    :root {
+      --header-height: 90px;
+    }
+
     body {
       margin: 0;
       font-family: "Poppins", sans-serif;
       color: #111827;
       background: #f3f4f6;
+      background: url("../assets/images/123.jpg") no-repeat center center fixed;
+      background-size: cover;
+      padding-top: var(--header-height);
     }
 
     header {
@@ -26,9 +33,9 @@
       top: 0;
       left: 0;
       width: 100%;
+      height: var(--header-height);
       z-index: 1000;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
-      min-height: 72px;
     }
 
     .logo-area {
@@ -36,7 +43,6 @@
       align-items: center;
       gap: 12px;
       cursor: pointer;
-      position: relative;
     }
 
     .logo-area img {
@@ -122,8 +128,7 @@
       padding: 28px;
       box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
       position: sticky;
-      top: 100px;
-      align-self: start;
+      top: calc(var(--header-height) + 10px);
     }
 
     .filters-panel h2 {
@@ -149,15 +154,6 @@
       border-radius: 18px;
       border: 1px solid #d1d5db;
       background: #f8fafc;
-      color: #111827;
-      font-size: 0.98rem;
-      transition: border-color 0.25s ease, box-shadow 0.25s ease;
-    }
-
-    .filter-group input[type="search"]:focus {
-      outline: none;
-      border-color: #263238;
-      box-shadow: 0 0 0 4px rgba(38, 50, 56, 0.12);
     }
 
     .checkbox-group {
@@ -181,7 +177,6 @@
       width: 18px;
       height: 18px;
       accent-color: #263238;
-      border-radius: 4px;
     }
 
     .panel-actions {
@@ -194,50 +189,23 @@
       border: none;
       border-radius: 16px;
       padding: 14px 20px;
-      font-size: 0.95rem;
       font-weight: 700;
       cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     }
 
-    .panel-actions .apply-button {
+    .apply-button {
       background: #263238;
-      color: #ffffff;
-      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+      color: #fff;
     }
 
-    .panel-actions .apply-button:hover {
-      transform: translateY(-1px);
-      background: #37474f;
-    }
-
-    .panel-actions .clear-button {
-      background: #ffffff;
-      color: #111827;
+    .clear-button {
+      background: #fff;
       border: 1px solid #d1d5db;
-    }
-
-    .panel-actions .clear-button:hover {
-      background: #f3f4f6;
     }
 
     .results-panel {
       display: grid;
       gap: 22px;
-    }
-
-    .results-header {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .count-summary {
-      color: #111827;
-      font-size: 1rem;
-      font-weight: 700;
     }
 
     .attractions-list {
@@ -252,7 +220,6 @@
       box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
       display: grid;
       grid-template-columns: 320px 1fr;
-      min-height: 240px;
     }
 
     .attraction-image {
@@ -266,156 +233,52 @@
       padding: 28px;
       display: flex;
       flex-direction: column;
-    }
-
-    .card-header {
-      display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      gap: 14px;
-      flex-wrap: wrap;
     }
 
     .category-link {
       display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 84px;
       padding: 10px 16px;
       border-radius: 999px;
       background: #e2e8f0;
-      color: #1f2a33;
-      font-size: 0.9rem;
       font-weight: 700;
-      text-decoration: none;
     }
 
     .attraction-title {
       margin: 12px 0 8px;
       font-size: 1.75rem;
-      color: #111827;
-      line-height: 1.1;
     }
 
-    .attraction-title a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .attraction-title a:hover {
-      color: #1f2a33;
-    }
-
-    .location {
-      margin: 0;
-      color: #4b5563;
-      font-size: 0.98rem;
-      line-height: 1.6;
-    }
-
+    .location,
     .card-description {
-      margin: 18px 0 0;
       color: #4b5563;
-      line-height: 1.8;
-      font-size: 1rem;
-      flex-grow: 1;
-    }
-
-    .card-specs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-top: 20px;
-    }
-
-    .card-specs span {
-      display: inline-flex;
-      align-items: center;
-      padding: 10px 16px;
-      border-radius: 16px;
-      background: #f8fafc;
-      color: #111827;
-      font-size: 0.95rem;
-      font-weight: 600;
-      border: 1px solid #e5e7eb;
     }
 
     .card-actions {
       display: flex;
-      flex-wrap: wrap;
       gap: 14px;
       margin-top: 22px;
     }
 
-    .card-button,
-    .card-link {
-      border-radius: 16px;
-      padding: 14px 22px;
-      font-weight: 700;
-      text-decoration: none;
-      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
     .card-button {
       background: #263238;
-      color: #ffffff;
-    }
-
-    .card-button:hover {
-      transform: translateY(-2px);
-      background: #1f2a33;
+      color: #fff;
+      padding: 14px 22px;
+      border-radius: 16px;
+      text-decoration: none;
     }
 
     .card-link {
-      background: #ffffff;
-      color: #111827;
       border: 1px solid #d1d5db;
-    }
-
-    .card-link:hover {
-      background: #f9fafb;
-    }
-
-    @media (max-width: 1100px) {
-      .attraction-card {
-        grid-template-columns: 1fr;
-      }
-
-      .attraction-image {
-        min-height: 260px;
-      }
+      padding: 14px 22px;
+      border-radius: 16px;
+      text-decoration: none;
+      color: #111827;
     }
 
     @media (max-width: 900px) {
       .tourist-layout {
         grid-template-columns: 1fr;
-      }
-
-      .filters-panel {
-        position: relative;
-        top: auto;
-      }
-    }
-
-    @media (max-width: 680px) {
-      header {
-        padding: 18px 22px;
-      }
-
-      main.portal-content {
-        padding: 24px 18px 36px;
-      }
-
-      .page-header {
-        padding: 28px 22px;
-      }
-
-      .card-actions {
-        flex-direction: column;
-        align-items: stretch;
       }
     }
   </style>
@@ -423,181 +286,181 @@
 
 <body>
 
-  <!-- Header -->
-  <header>
-    <div class="logo-area" id="profileArea">
-      <img id="profileImage" src="../assets/images/user_8801434.png" alt="User Profile" />
-      <h2 id="userName">User</h2>
+<header>
+  <div class="logo-area">
+    <img src="../assets/images/user_8801434.png" id="profileImage">
+    <h2 id="userName">User</h2>
+  </div>
+
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="tourist.html" class="active">Tourist Spots</a>
+    <a href="jeepterminal.html">Terminals</a>
+  </nav>
+</header>
+
+<main class="portal-content">
+
+  <div class="page-header">
+    <h1>Discover Baguio Tourist Spots</h1>
+    <p>Explore the best destinations in the City of Pines.</p>
+  </div>
+
+ <div class="tourist-layout">
+
+  <aside class="filters-panel">
+    <div class="filter-group">
+      <label>Categories</label>
+      <div class="checkbox-group">
+        <label class="checkbox-item"><input type="checkbox"> Nature</label>
+        <label class="checkbox-item"><input type="checkbox"> Parks</label>
+        <label class="checkbox-item"><input type="checkbox"> Food</label>
+        <label class="checkbox-item"><input type="checkbox"> Historical</label>
+      </div>
     </div>
 
-    <nav>
-      <a href="home.html">Home</a>
-      <a href="tourist.html" class="active">Tourist Spots</a>
-      <a href="jeepterminal.html">Terminals</a>
-    </nav>
-  </header>
+    <div class="panel-actions">
+      <button class="apply-button">Apply Filters</button>
+      <button class="clear-button">Clear</button>
+    </div>
+  </aside>
 
-  <main class="portal-content" style="padding-top: 112px;">
-    <section class="page-header">
-      <h1>Tourist Spots</h1>
-      <p>Discover Baguio's most popular destinations with filters that help you choose the best attractions fast.</p>
-    </section>
+  <section class="results-panel">
 
-    <div class="tourist-layout">
-      <aside class="filters-panel">
-        <h2>Filters</h2>
+    <div class="attractions-list">
 
-        <div class="filter-group">
-          <label for="search-attraction">Search</label>
-          <input id="search-attraction" type="search" placeholder="Search attractions..." />
-        </div>
+      <!-- Mirador -->
+      <div class="attraction-card">
+        <img class="attraction-image" src="../assets/images/park.jpg" alt="Mirador Heritage and Eco Park">
 
-        <div class="filter-group">
-          <label>Attraction Type</label>
-          <div class="checkbox-group">
-            <label class="checkbox-item"><input type="checkbox" value="park" checked /> Park</label>
-            <label class="checkbox-item"><input type="checkbox" value="museum" checked /> Museum</label>
-            <label class="checkbox-item"><input type="checkbox" value="garden" checked /> Garden</label>
-            <label class="checkbox-item"><input type="checkbox" value="landmark" checked /> Landmark</label>
+        <div class="attraction-body">
+          <div>
+            <span class="category-link">Nature</span>
+            <h2 class="attraction-title">Mirador Heritage And Eco Park</h2>
+            <p class="location">St. Theresa St 1 2600 Baguio City</p>
+            <p class="card-description">
+              A popular spot for tourists and locals alike, who come to enjoy the stunning views of Baguio City and the surrounding mountains and is also home to a bamboo grove, rock formations, and more.
+            </p>
+          </div>
+
+          <div class="card-actions">
+            <a class="card-button" href="mirador.html">View Details</a>
+            <a class="card-link" href="jeepterminal.html">Directions</a>
           </div>
         </div>
+      </div>
 
-        <div class="panel-actions">
-          <button type="button" class="apply-button">Apply Filters</button>
-          <button type="button" class="clear-button">Clear All</button>
-        </div>
-      </aside>
+      <!-- Botanical Garden -->
+      <div class="attraction-card">
+        <img class="attraction-image" src="../assets/images/botanicalgarden.jpg" alt="Botanical Garden">
 
-      <section class="results-panel">
-        <div class="results-header">
-          <div class="count-summary">Showing 7 attractions</div>
-        </div>
+        <div class="attraction-body">
+          <div>
+            <span class="category-link">Park</span>
+            <h2 class="attraction-title">Botanical Garden</h2>
+            <p class="location">Gibraltar Rd, Baguio City</p>
+            <p class="card-description">
+              A peaceful botanical sanctuary with towering pines, flower gardens, and cultural sculptures perfect for relaxing walks and photo spots.
+            </p>
+          </div>
 
-        <div class="attractions-list">
-      <article class="attraction-card">
-        <div class="card-meta">
-          <a href="botanical.html" class="category-link">park</a>
+          <div class="card-actions">
+            <a class="card-button" href="botanical.html">View Details</a>
+            <a class="card-link" href="jeepterminal.html">Directions</a>
+          </div>
         </div>
-        <h3 class="attraction-title"><a href="botanical.html">Botanical Garden</a></h3>
-        <p class="location">Botanical Garden, Gibraltar Rd, Baguio City</p>
-        <p class="card-description">A peaceful botanical sanctuary with towering pines, flower gardens, and cultural sculptures perfect for relaxing walks and photo spots.</p>
-        <div class="card-specs">
-          <span>Hours: 6:00-7:00</span>
-          <span>FREE</span>
-        </div>
-        <div class="card-actions">
-          <a href="botanical.html" class="card-button">View Details</a>
-          <a href="botanical.html" class="card-link">Directions</a>
-        </div>
-      </article>
+      </div>
 
-      <article class="attraction-card">
-        <div class="card-meta">
-          <a href="minesview.html" class="category-link">park</a>
-        </div>
-        <h3 class="attraction-title"><a href="minesview.html">Mines View Park</a></h3>
-        <p class="location">Mines View Park Road, Barangay Shilan, Baguio City</p>
-        <p class="card-description">A popular viewpoint offering sweeping mountain vistas, historic mining landscapes, and shops selling local crafts and treats.</p>
-        <div class="card-specs">
-          <span>Hours: 6:00-8:00</span>
-          <span>₱20</span>
-        </div>
-        <div class="card-actions">
-          <a href="minesview.html" class="card-button">View Details</a>
-          <a href="minesview.html" class="card-link">Directions</a>
-        </div>
-      </article>
+      <!-- Mines View Park -->
+      <div class="attraction-card">
+        <img class="attraction-image" src="../assets/images/minesviewpark.jpg" alt="Mines View Park">
 
-      <article class="attraction-card">
-        <div class="card-meta">
-          <a href="mansion.html" class="category-link">landmark</a>
-        </div>
-        <h3 class="attraction-title"><a href="mansion.html">The Mansion</a></h3>
-        <p class="location">The Mansion, Romulo Drive, Baguio</p>
-        <p class="card-description">The official summer residence of the Philippine President, known for its grand gate, manicured lawns, and historical significance.</p>
-        <div class="card-specs">
-          <span>Hours: 9:00-3:00</span>
-          <span>FREE</span>
-        </div>
-        <div class="card-actions">
-          <a href="mansion.html" class="card-button">View Details</a>
-          <a href="mansion.html" class="card-link">Directions</a>
-        </div>
-      </article>
+        <div class="attraction-body">
+          <div>
+            <span class="category-link">Park</span>
+            <h2 class="attraction-title">Mines View Park</h2>
+            <p class="location">Barangay Shilan, Baguio City</p>
+            <p class="card-description">
+              A popular viewpoint offering sweeping mountain vistas, historic mining landscapes, and shops selling local crafts and treats.
+            </p>
+          </div>
 
-      <article class="attraction-card">
-        <div class="card-meta">
-          <a href="johnhay.html" class="category-link">park</a>
+          <div class="card-actions">
+            <a class="card-button" href="minesview.html">View Details</a>
+            <a class="card-link" href="jeepterminal.html">Directions</a>
+          </div>
         </div>
-        <h3 class="attraction-title"><a href="johnhay.html">Camp John Hay</a></h3>
-        <p class="location">Loakan Road, Baguio City</p>
-        <p class="card-description">A historic leisure complex with pine forests, trails, cafes, and heritage sites, perfect for families and outdoor exploration.</p>
-        <div class="card-specs">
-          <span>Hours: 8:00-7:00</span>
-          <span>FREE</span>
-        </div>
-        <div class="card-actions">
-          <a href="johnhay.html" class="card-button">View Details</a>
-          <a href="johnhay.html" class="card-link">Directions</a>
-        </div>
-      </article>
+      </div>
 
-      <article class="attraction-card">
-        <div class="card-meta">
-          <a href="grotto.html" class="category-link">landmark</a>
-        </div>
-        <h3 class="attraction-title"><a href="grotto.html">Lourdes Grotto</a></h3>
-        <p class="location">Lourdes Grotto, Baguio City</p>
-        <p class="card-description">A beloved pilgrimage site featuring the Virgin Mary statue atop 252 steps and panoramic city views for reflective moments.</p>
-        <div class="card-specs">
-          <span>Hours: 6:00-5:00</span>
-          <span>FREE</span>
-        </div>
-        <div class="card-actions">
-          <a href="grotto.html" class="card-button">View Details</a>
-          <a href="grotto.html" class="card-link">Directions</a>
-        </div>
-      </article>
+      <!-- The Mansion -->
+      <div class="attraction-card">
+        <img class="attraction-image" src="../assets/images/mansion.jpg" alt="The Mansion">
 
-      <article class="attraction-card">
-        <div class="card-meta">
-          <a href="goodshepherd.html" class="category-link">landmark</a>
-        </div>
-        <h3 class="attraction-title"><a href="goodshepherd.html">Good Shepherd Convent</a></h3>
-        <p class="location">Good Shepherd, Baguio City</p>
-        <p class="card-description">Famous for ube jam and local pasalubong, this convent is a scenic stop for shopping, snacks, and quiet reflection.</p>
-        <div class="card-specs">
-          <span>Hours: 8:00-6:00</span>
-          <span>FREE</span>
-        </div>
-        <div class="card-actions">
-          <a href="goodshepherd.html" class="card-button">View Details</a>
-          <a href="goodshepherd.html" class="card-link">Directions</a>
-        </div>
-      </article>
+        <div class="attraction-body">
+          <div>
+            <span class="category-link">Landmark</span>
+            <h2 class="attraction-title">The Mansion</h2>
+            <p class="location">Romulo Drive, Baguio City</p>
+            <p class="card-description">
+              The official summer residence of the Philippine President, known for its grand gate, manicured lawns, and historical significance.
+            </p>
+          </div>
 
-      <article class="attraction-card">
-        <div class="card-meta">
-          <a href="mirador.html" class="category-link">garden</a>
+          <div class="card-actions">
+            <a class="card-button" href="mansion.html">View Details</a>
+            <a class="card-link" href="jeepterminal.html">Directions</a>
+          </div>
         </div>
-        <h3 class="attraction-title"><a href="mirador.html">Mirador Heritage & Eco-Spirituality Park</a></h3>
-        <p class="location">Mirador Park, Baguio City</p>
-        <p class="card-description">A peaceful cultural park known for its torii gate, gardens, and expansive sunset views over the mountains.</p>
-        <div class="card-specs">
-          <span>Hours: 6:00-6:00</span>
-          <span>FREE</span>
+      </div>
+
+      <!-- Camp John Hay -->
+      <div class="attraction-card">
+        <img class="attraction-image" src="../assets/images/camp.jpg" alt="Camp John Hay">
+
+        <div class="attraction-body">
+          <div>
+            <span class="category-link">Park</span>
+            <h2 class="attraction-title">Camp John Hay</h2>
+            <p class="location">Loakan Road, Baguio City</p>
+            <p class="card-description">
+              A historic leisure complex with pine forests, trails, cafés, and heritage sites perfect for outdoor exploration.
+            </p>
+          </div>
+
+          <div class="card-actions">
+            <a class="card-button" href="johnhay.html">View Details</a>
+            <a class="card-link" href="jeepterminal.html">Directions</a>
+          </div>
         </div>
-        <div class="card-actions">
-          <a href="mirador.html" class="card-button">View Details</a>
-          <a href="mirador.html" class="card-link">Directions</a>
+      </div>
+
+      <div class="attraction-card">
+        <img class="attraction-image" src="../assets/images/grotto.jpg" alt="Camp John Hay">
+
+        <div class="attraction-body">
+          <div>
+            <span class="category-link">Landmark</span>
+            <h2 class="attraction-title">Lourdes Grotto</h2>
+            <p class="location">Lourdes Grotto, Baguio City</p>
+            <p class="card-description">
+              A beloved pilgrimage site featuring the Virgin Mary statue atop 252 steps and panoramic city views for reflective moments.
+            </p>
+          </div>
+
+          <div class="card-actions">
+            <a class="card-button" href="grotto.html">View Details</a>
+            <a class="card-link" href="jeepterminal.html">Directions</a>
+          </div>
         </div>
-      </article>
-        </div>
-      </section>
+      </div>
     </div>
-  </main>
 
-  <footer>
+  </section>
+
+</div>
+
+
+<footer>
 <div class="footer-content">
 <div class="footer-section">
 <h4>About Baguio Track</h4>
