@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Baguio Track | Tourist Spots</title>
+  <link rel="stylesheet" href="../assets/css/home.css" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      color: #111827;
+      background: #f3f4f6;
+    }
+
+    header {
+      background: linear-gradient(90deg, #263238, #37474f);
+      color: white;
+      padding: 15px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+      min-height: 72px;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .logo-area img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #f2d7b5;
+      transition: transform 0.3s ease;
+    }
+
+    .logo-area img:hover {
+      transform: scale(1.08);
+    }
+
+    .logo-area h2 {
+      font-size: 22px;
+      color: #ffffff;
+      margin: 0;
+    }
+
+    nav {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    nav a:hover,
+    nav a.active {
+      color: #f2d7b5;
+    }
+
+    main.portal-content {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 28px 30px 48px;
+    }
+
+    .page-header {
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96));
+      border-radius: 24px;
+      padding: 40px 42px;
+      margin-bottom: 28px;
+      display: grid;
+      gap: 16px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+    }
+
+    .page-header h1 {
+      margin: 0;
+      font-size: clamp(2.4rem, 3vw, 3.6rem);
+      color: #111827;
+      letter-spacing: -0.04em;
+      line-height: 1.02;
+    }
+
+    .page-header p {
+      margin: 0;
+      max-width: 780px;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: #475569;
+    }
+
+    .tourist-layout {
+      display: grid;
+      grid-template-columns: minmax(260px, 320px) 1fr;
+      gap: 30px;
+      align-items: start;
+    }
+
+    .filters-panel {
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+      position: sticky;
+      top: 100px;
+      align-self: start;
+    }
+
+    .filters-panel h2 {
+      margin: 0 0 18px;
+      font-size: 2rem;
+      color: #111827;
+    }
+
+    .filter-group {
+      margin-bottom: 24px;
+    }
+
+    .filter-group label {
+      display: block;
+      margin-bottom: 14px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .filter-group input[type="search"] {
+      width: 100%;
+      padding: 16px 18px;
+      border-radius: 18px;
+      border: 1px solid #d1d5db;
+      background: #f8fafc;
+      color: #111827;
+      font-size: 0.98rem;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .filter-group input[type="search"]:focus {
+      outline: none;
+      border-color: #263238;
+      box-shadow: 0 0 0 4px rgba(38, 50, 56, 0.12);
+    }
+
+    .checkbox-group {
+      display: grid;
+      gap: 12px;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .checkbox-item input {
+      width: 18px;
+      height: 18px;
+      accent-color: #263238;
+      border-radius: 4px;
+    }
+
+    .panel-actions {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .panel-actions button {
+      border: none;
+      border-radius: 16px;
+      padding: 14px 20px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .panel-actions .apply-button {
+      background: #263238;
+      color: #ffffff;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .panel-actions .apply-button:hover {
+      transform: translateY(-1px);
+      background: #37474f;
+    }
+
+    .panel-actions .clear-button {
+      background: #ffffff;
+      color: #111827;
+      border: 1px solid #d1d5db;
+    }
+
+    .panel-actions .clear-button:hover {
+      background: #f3f4f6;
+    }
+
+    .results-panel {
+      display: grid;
+      gap: 22px;
+    }
+
+    .results-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .count-summary {
+      color: #111827;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .attractions-list {
+      display: grid;
+      gap: 22px;
+    }
+
+    .attraction-card {
+      background: #ffffff;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      min-height: 240px;
+    }
+
+    .attraction-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      min-height: 240px;
+    }
+
+    .attraction-body {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .category-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 84px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      color: #1f2a33;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .attraction-title {
+      margin: 12px 0 8px;
+      font-size: 1.75rem;
+      color: #111827;
+      line-height: 1.1;
+    }
+
+    .attraction-title a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .attraction-title a:hover {
+      color: #1f2a33;
+    }
+
+    .location {
+      margin: 0;
+      color: #4b5563;
+      font-size: 0.98rem;
+      line-height: 1.6;
+    }
+
+    .card-description {
+      margin: 18px 0 0;
+      color: #4b5563;
+      line-height: 1.8;
+      font-size: 1rem;
+      flex-grow: 1;
+    }
+
+    .card-specs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .card-specs span {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 16px;
+      border-radius: 16px;
+      background: #f8fafc;
+      color: #111827;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border: 1px solid #e5e7eb;
+    }
+
+    .card-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .card-button,
+    .card-link {
+      border-radius: 16px;
+      padding: 14px 22px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-button {
+      background: #263238;
+      color: #ffffff;
+    }
+
+    .card-button:hover {
+      transform: translateY(-2px);
+      background: #1f2a33;
+    }
+
+    .card-link {
+      background: #ffffff;
+      color: #111827;
+      border: 1px solid #d1d5db;
+    }
+
+    .card-link:hover {
+      background: #f9fafb;
+    }
+
+    @media (max-width: 1100px) {
+      .attraction-card {
+        grid-template-columns: 1fr;
+      }
+
+      .attraction-image {
+        min-height: 260px;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .tourist-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .filters-panel {
+        position: relative;
+        top: auto;
+      }
+    }
+
+    @media (max-width: 680px) {
+      header {
+        padding: 18px 22px;
+      }
+
+      main.portal-content {
+        padding: 24px 18px 36px;
+      }
+
+      .page-header {
+        padding: 28px 22px;
+      }
+
+      .card-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="logo-area" id="profileArea">
+      <img id="profileImage" src="../assets/images/user_8801434.png" alt="User Profile" />
+      <h2 id="userName">User</h2>
+    </div>
+
+    <nav>
+      <a href="home.html">Home</a>
+      <a href="tourist.html" class="active">Tourist Spots</a>
+      <a href="jeepterminal.html">Terminals</a>
+    </nav>
+  </header>
+
+  <main class="portal-content" style="padding-top: 112px;">
+    <section class="page-header">
+      <h1>Tourist Spots</h1>
+      <p>Discover Baguio's most popular destinations with filters that help you choose the best attractions fast.</p>
+    </section>
+
+    <div class="tourist-layout">
+      <aside class="filters-panel">
+        <h2>Filters</h2>
+
+        <div class="filter-group">
+          <label for="search-attraction">Search</label>
+          <input id="search-attraction" type="search" placeholder="Search attractions..." />
+        </div>
+
+        <div class="filter-group">
+          <label>Attraction Type</label>
+          <div class="checkbox-group">
+            <label class="checkbox-item"><input type="checkbox" value="park" checked /> Park</label>
+            <label class="checkbox-item"><input type="checkbox" value="museum" checked /> Museum</label>
+            <label class="checkbox-item"><input type="checkbox" value="garden" checked /> Garden</label>
+            <label class="checkbox-item"><input type="checkbox" value="landmark" checked /> Landmark</label>
+          </div>
+        </div>
+
+        <div class="panel-actions">
+          <button type="button" class="apply-button">Apply Filters</button>
+          <button type="button" class="clear-button">Clear All</button>
+        </div>
+      </aside>
+
+      <section class="results-panel">
+        <div class="results-header">
+          <div class="count-summary">Showing 7 attractions</div>
+        </div>
+
+        <div class="attractions-list">
+      <article class="attraction-card">
+        <div class="card-meta">
+          <a href="botanical.html" class="category-link">park</a>
+        </div>
+        <h3 class="attraction-title"><a href="botanical.html">Botanical Garden</a></h3>
+        <p class="location">Botanical Garden, Gibraltar Rd, Baguio City</p>
+        <p class="card-description">A peaceful botanical sanctuary with towering pines, flower gardens, and cultural sculptures perfect for relaxing walks and photo spots.</p>
+        <div class="card-specs">
+          <span>Hours: 6:00-7:00</span>
+          <span>FREE</span>
+        </div>
+        <div class="card-actions">
+          <a href="botanical.html" class="card-button">View Details</a>
+          <a href="botanical.html" class="card-link">Directions</a>
+        </div>
+      </article>
+
+      <article class="attraction-card">
+        <div class="card-meta">
+          <a href="minesview.html" class="category-link">park</a>
+        </div>
+        <h3 class="attraction-title"><a href="minesview.html">Mines View Park</a></h3>
+        <p class="location">Mines View Park Road, Barangay Shilan, Baguio City</p>
+        <p class="card-description">A popular viewpoint offering sweeping mountain vistas, historic mining landscapes, and shops selling local crafts and treats.</p>
+        <div class="card-specs">
+          <span>Hours: 6:00-8:00</span>
+          <span>₱20</span>
+        </div>
+        <div class="card-actions">
+          <a href="minesview.html" class="card-button">View Details</a>
+          <a href="minesview.html" class="card-link">Directions</a>
+        </div>
+      </article>
+
+      <article class="attraction-card">
+        <div class="card-meta">
+          <a href="mansion.html" class="category-link">landmark</a>
+        </div>
+        <h3 class="attraction-title"><a href="mansion.html">The Mansion</a></h3>
+        <p class="location">The Mansion, Romulo Drive, Baguio</p>
+        <p class="card-description">The official summer residence of the Philippine President, known for its grand gate, manicured lawns, and historical significance.</p>
+        <div class="card-specs">
+          <span>Hours: 9:00-3:00</span>
+          <span>FREE</span>
+        </div>
+        <div class="card-actions">
+          <a href="mansion.html" class="card-button">View Details</a>
+          <a href="mansion.html" class="card-link">Directions</a>
+        </div>
+      </article>
+
+      <article class="attraction-card">
+        <div class="card-meta">
+          <a href="johnhay.html" class="category-link">park</a>
+        </div>
+        <h3 class="attraction-title"><a href="johnhay.html">Camp John Hay</a></h3>
+        <p class="location">Loakan Road, Baguio City</p>
+        <p class="card-description">A historic leisure complex with pine forests, trails, cafes, and heritage sites, perfect for families and outdoor exploration.</p>
+        <div class="card-specs">
+          <span>Hours: 8:00-7:00</span>
+          <span>FREE</span>
+        </div>
+        <div class="card-actions">
+          <a href="johnhay.html" class="card-button">View Details</a>
+          <a href="johnhay.html" class="card-link">Directions</a>
+        </div>
+      </article>
+
+      <article class="attraction-card">
+        <div class="card-meta">
+          <a href="grotto.html" class="category-link">landmark</a>
+        </div>
+        <h3 class="attraction-title"><a href="grotto.html">Lourdes Grotto</a></h3>
+        <p class="location">Lourdes Grotto, Baguio City</p>
+        <p class="card-description">A beloved pilgrimage site featuring the Virgin Mary statue atop 252 steps and panoramic city views for reflective moments.</p>
+        <div class="card-specs">
+          <span>Hours: 6:00-5:00</span>
+          <span>FREE</span>
+        </div>
+        <div class="card-actions">
+          <a href="grotto.html" class="card-button">View Details</a>
+          <a href="grotto.html" class="card-link">Directions</a>
+        </div>
+      </article>
+
+      <article class="attraction-card">
+        <div class="card-meta">
+          <a href="goodshepherd.html" class="category-link">landmark</a>
+        </div>
+        <h3 class="attraction-title"><a href="goodshepherd.html">Good Shepherd Convent</a></h3>
+        <p class="location">Good Shepherd, Baguio City</p>
+        <p class="card-description">Famous for ube jam and local pasalubong, this convent is a scenic stop for shopping, snacks, and quiet reflection.</p>
+        <div class="card-specs">
+          <span>Hours: 8:00-6:00</span>
+          <span>FREE</span>
+        </div>
+        <div class="card-actions">
+          <a href="goodshepherd.html" class="card-button">View Details</a>
+          <a href="goodshepherd.html" class="card-link">Directions</a>
+        </div>
+      </article>
+
+      <article class="attraction-card">
+        <div class="card-meta">
+          <a href="mirador.html" class="category-link">garden</a>
+        </div>
+        <h3 class="attraction-title"><a href="mirador.html">Mirador Heritage & Eco-Spirituality Park</a></h3>
+        <p class="location">Mirador Park, Baguio City</p>
+        <p class="card-description">A peaceful cultural park known for its torii gate, gardens, and expansive sunset views over the mountains.</p>
+        <div class="card-specs">
+          <span>Hours: 6:00-6:00</span>
+          <span>FREE</span>
+        </div>
+        <div class="card-actions">
+          <a href="mirador.html" class="card-button">View Details</a>
+          <a href="mirador.html" class="card-link">Directions</a>
+        </div>
+      </article>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+<div class="footer-content">
+<div class="footer-section">
+<h4>About Baguio Track</h4>
+<p>Your gateway to exploring the summer capital of the Philippines with verified information and curated experiences.</p>
+</div>
+<div class="footer-section">
+<h4>Plan Your Trip</h4>
+<ul>
+<li><a href="tourist.html">Tourist Attractions</a></li>
+<li><a href="jeepterminal.html">Jeepney Terminals</a></li>
+<li><a href="tourist.html">Accommodations</a></li>
+</ul>
+</div>
+<div class="footer-section">
+<h4>Support & Updates</h4>
+<ul>
+<li><a href="tourist.html">Events & Announcements</a></li>
+<li><a href="mailto:baguiovisita@gmail.com">Email Us</a></li>
+<li><a href="safety.html">Safety Tips</a></li>
+</ul>
+</div>
+</div>
+<hr style="margin: 20px 0; border: none; border-top: 1px solid rgba(255,255,255,0.2);">
+<p style="margin: 0;">© 2026 Baguio Track | All Rights Reserved</p>
+</footer>
+
+
+<script src="../assets/js/profile-tabs.js"></script>
+
+<script>
+// Check if user is logged in and update profile
+function applyAttractionFilters() {
+  const query = document.getElementById('search-attraction').value.trim().toLowerCase();
+  const activeTypes = Array.from(document.querySelectorAll('.checkbox-group input[type="checkbox"]:checked')).map(input => input.value.toLowerCase());
+  const cards = document.querySelectorAll('.attractions-list .attraction-card');
+  let visibleCount = 0;
+
+  cards.forEach(card => {
+    const title = card.querySelector('.attraction-title').textContent.toLowerCase();
+    const description = card.querySelector('.card-description').textContent.toLowerCase();
+    const category = card.querySelector('.category-link').textContent.toLowerCase();
+    const matchesSearch = !query || title.includes(query) || description.includes(query) || category.includes(query);
+    const matchesType = activeTypes.length === 0 || activeTypes.includes(category);
+    const visible = matchesSearch && matchesType;
+
+    card.style.display = visible ? 'grid' : 'none';
+    if (visible) visibleCount += 1;
+  });
+
+  const count = document.querySelector('.count-summary');
+  if (count) count.textContent = `Showing ${visibleCount} attraction${visibleCount === 1 ? '' : 's'}`;
+}
+
+function resetAttractionFilters() {
+  document.getElementById('search-attraction').value = '';
+  document.querySelectorAll('.checkbox-group input[type="checkbox"]').forEach(input => input.checked = true);
+  applyAttractionFilters();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const userEmail = localStorage.getItem("userEmail");
+  const storedName = localStorage.getItem("baguioTrackUserName");
+  const storedImage = localStorage.getItem("baguioTrackProfileImage");
+  const userNameElement = document.getElementById("userName");
+  const profileImage = document.getElementById("profileImage");
+
+  if (storedName && userNameElement) {
+    userNameElement.textContent = storedName;
+  } else if (isLoggedIn === "true" && userEmail) {
+    const username = userEmail.split('@')[0];
+    if (userNameElement) userNameElement.textContent = username;
+  } else {
+    window.location.href = "signup.html";
+  }
+
+  if (storedImage && profileImage) {
+    profileImage.src = storedImage;
+  } else if (profileImage) {
+    profileImage.src = "../assets/images/user_8801434.png";
+  }
+
+  document.getElementById('search-attraction').addEventListener('input', applyAttractionFilters);
+  document.querySelectorAll('.checkbox-group input[type="checkbox"]').forEach(input => {
+    input.addEventListener('change', applyAttractionFilters);
+  });
+
+  document.querySelector('.apply-button').addEventListener('click', applyAttractionFilters);
+  document.querySelector('.clear-button').addEventListener('click', resetAttractionFilters);
+  applyAttractionFilters();
+});
+</script>
+</body>
+</html>

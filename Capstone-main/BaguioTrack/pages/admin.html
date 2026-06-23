@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Baguio Track | Admin Dashboard</title>
+  <link rel="stylesheet" href="../assets/css/admin.css" />
+  <style>
+    .management-grid,
+    .tools-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+      gap:14px;
+      margin-top:12px;
+    }
+
+    .manage-card,
+    .tool-card{
+      background:#fff;
+      border-radius:14px;
+      padding:16px;
+      box-shadow:0 3px 10px rgba(0,0,0,0.06);
+      border:1px solid rgba(0,0,0,0.05);
+    }
+
+    .manage-card h3,
+    .tool-card h3{
+      margin:0 0 8px;
+      font-size:16px;
+    }
+
+    .manage-card p,
+    .tool-card p{
+      margin:0 0 12px;
+      font-size:14px;
+      line-height:1.5;
+      opacity:0.85;
+    }
+
+    .manage-card button,
+    .tool-card button,
+    .notes-actions button,
+    #saveAnnouncementBtn{
+      border:none;
+      border-radius:10px;
+      padding:10px 14px;
+      cursor:pointer;
+      background:#145532;
+      color:#fff;
+      font-weight:600;
+    }
+
+    .manage-card button:hover,
+    .tool-card button:hover,
+    .notes-actions button:hover,
+    #saveAnnouncementBtn:hover{
+      background:#187842;
+    }
+
+    .danger-btn{
+      background:#b42318 !important;
+    }
+
+    .danger-btn:hover{
+      background:#912018 !important;
+    }
+
+    .status-list{
+      display:grid;
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .status-item{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      background:#fff;
+      border-radius:12px;
+      padding:12px 14px;
+      box-shadow:0 3px 10px rgba(0,0,0,0.06);
+    }
+
+    .status-badge{
+      display:inline-block;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .status-ok{
+      background:#dcfce7;
+      color:#166534;
+    }
+
+    .status-warn{
+      background:#fef3c7;
+      color:#92400e;
+    }
+
+    .notes-box{
+      margin-top:12px;
+    }
+
+    #adminNotes{
+      width:100%;
+      min-height:130px;
+      resize:vertical;
+      border-radius:12px;
+      border:1px solid #d0d5dd;
+      padding:14px;
+      font-size:14px;
+      font-family:inherit;
+      box-sizing:border-box;
+    }
+
+    .notes-actions{
+      display:flex;
+      gap:10px;
+      margin-top:10px;
+    }
+
+    .saved-note{
+      margin-top:10px;
+      font-size:14px;
+      color:#145532;
+    }
+
+    #announcementImage{
+      padding:8px;
+      border:1px solid #d0d5dd;
+      border-radius:8px;
+      cursor:pointer;
+    }
+
+    #announcementImagePreview{
+      box-shadow:0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    #announcementModal{
+      display:none;
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      background:rgba(0,0,0,0.5);
+      z-index:1000;
+      justify-content:center;
+      align-items:center;
+    }
+
+    #announcementModal > div{
+      background:white;
+      border-radius:12px;
+      padding:30px;
+      max-width:600px;
+      max-height:80vh;
+      overflow-y:auto;
+      box-shadow:0 10px 40px rgba(0,0,0,0.3);
+      position:relative;
+    }
+
+    .fb-card{
+      background:#fff;
+      border-radius:12px;
+      padding:14px 14px;
+      box-shadow:0 3px 10px rgba(0,0,0,0.06);
+    }
+
+    .fb-msg{
+      font-size:14px;
+      line-height:1.5;
+      white-space:pre-wrap;
+    }
+
+    .fb-empty{
+      background:#fff;
+      border-radius:12px;
+      padding:14px;
+      box-shadow:0 3px 10px rgba(0,0,0,0.06);
+    }
+
+    .activity-text{
+      margin-bottom:6px;
+      word-wrap:break-word;
+      white-space:normal;
+    }
+
+    .activity-show-more{
+      color:#145532;
+      cursor:pointer;
+      font-weight:500;
+      display:inline-block;
+      margin-top:4px;
+      font-size:0.9rem;
+    }
+
+    .activity-show-more:hover{
+      text-decoration:underline;
+    }
+  </style>
+</head>
+<body>
+  <main class="admin-shell">
+    <header class="admin-header">
+      <div>
+        <h1>Admin Dashboard</h1>
+        <p id="adminWelcome">Managing Baguio Track</p>
+      </div>
+      <button class="logout-btn" id="adminLogoutBtn">Logout</button>
+    </header>
+
+    <section class="stats-grid">
+      <article class="stat-card">
+        <h3>Daily Visitors</h3>
+        <p class="value" id="statDaily">0</p>
+      </article>
+      <article class="stat-card">
+        <h3>Total Page Visits</h3>
+        <p class="value" id="statPageVisits">0</p>
+      </article>
+      <article class="stat-card">
+        <h3>Announcements</h3>
+        <p class="value" id="statAnnouncements">0</p>
+      </article>
+      <article class="stat-card">
+        <h3>Feedback Messages</h3>
+        <p class="value" id="statFeedback">0</p>
+      </article>
+    </section>
+
+    <section class="panel-grid">
+      <article class="panel">
+        <h2>Content Management</h2>
+        <div class="management-grid">
+          <div class="manage-card">
+            <h3>Tourist Spots</h3>
+            <p>Update tourist spot pages, images, and information shown to users.</p>
+            <button class="manage-btn" data-page="tourist.html">Manage Page</button>
+          </div>
+
+          <div class="manage-card">
+            <h3>Jeepney Terminals</h3>
+            <p>Edit terminal details, routes, and other transport information.</p>
+            <button class="manage-btn" data-page="jeepterminal.html">Manage Page</button>
+          </div>
+
+          <div class="manage-card">
+            <h3>Safety Tips</h3>
+            <p>Review and update travel reminders, emergency contacts, and alerts.</p>
+            <button class="manage-btn" data-page="safety.html">Manage Page</button>
+          </div>
+
+          <div class="manage-card">
+            <h3>About Page</h3>
+            <p>Edit website background, project details, and team information.</p>
+            <button class="manage-btn" data-page="about.html">Manage Page</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel">
+        <h2>Recent Activity</h2>
+        <ul class="activity-list" id="recentActivityList"></ul>
+      </article>
+    </section>
+
+    <section class="panel-grid" style="margin-top:16px;">
+      <article class="panel">
+        <h2>System Status</h2>
+        <div class="status-list">
+          <div class="status-item">
+            <span>Admin Authentication</span>
+            <span class="status-badge status-ok" id="authStatus">Connected</span>
+          </div>
+          <div class="status-item">
+            <span>Firestore Feedback</span>
+            <span class="status-badge status-ok" id="dbStatus">Connected</span>
+          </div>
+          <div class="status-item">
+            <span>Last Admin Login</span>
+            <span id="lastLoginText">Just now</span>
+          </div>
+          <div class="status-item">
+            <span>Announcement Records</span>
+            <span id="announcementCountText">0 saved</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel">
+        <h2>Admin Notes</h2>
+        <div class="notes-box">
+          <textarea id="adminNotes" placeholder="Write reminders, tasks, or notes for admin use only..."></textarea>
+          <div class="notes-actions">
+            <button id="saveNotesBtn">Save Notes</button>
+            <button id="clearNotesBtn" class="danger-btn">Clear Notes</button>
+          </div>
+          <p id="notesStatus" class="saved-note"></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel announcement-box" style="margin-top:16px;">
+      <h2>Site Announcement</h2>
+      <textarea id="announcementInput" placeholder="Write an announcement for all users..."></textarea>
+      <div style="margin-top:12px;">
+        <label for="announcementImage" style="display:block; margin-bottom:8px; font-weight:500;">Announcement Image</label>
+        <input type="file" id="announcementImage" accept="image/*" style="display:block; margin-bottom:12px;">
+        <img id="announcementImagePreview" style="max-width:200px; max-height:150px; margin-bottom:12px; border-radius:8px; display:none;">
+      </div>
+      <button id="saveAnnouncementBtn">Save Announcement</button>
+      <p id="saveStatus" class="saved-note"></p>
+    </section>
+
+    <section class="panel" style="margin-top:16px;">
+      <h2>User Feedback</h2>
+      <div id="feedbackStatus" class="saved-note" style="margin-bottom:10px;"></div>
+      <div id="feedbackList" style="display:grid; gap:12px;"></div>
+    </section>
+  </main>
+
+  <!-- Announcement Modal -->
+  <div id="announcementModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
+    <div style="background:white; border-radius:12px; padding:30px; max-width:600px; max-height:80vh; overflow-y:auto; box-shadow:0 10px 40px rgba(0,0,0,0.3); position:relative;">
+      <button id="closeAnnouncementModal" style="position:absolute; top:15px; right:15px; background:none; border:none; font-size:24px; cursor:pointer; color:#666;">×</button>
+      <h2 id="modalTitle" style="color:#145532; margin-bottom:15px;">Full Announcement</h2>
+      <img id="modalImage" style="width:100%; max-height:300px; object-fit:cover; border-radius:8px; margin-bottom:15px; display:none;">
+      <p id="modalContent" style="line-height:1.6; color:#333; margin-bottom:15px;"></p>
+      <p id="modalDate" style="font-size:12px; color:#666; font-style:italic;"></p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+    import {
+      getFirestore,
+      collection,
+      query,
+      orderBy,
+      onSnapshot
+    } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDPFnyJC66A-HQC3dKCQQ4SobAFRezx7fU",
+      authDomain: "baguio-track-c702f.firebaseapp.com",
+      projectId: "baguio-track-c702f",
+      storageBucket: "baguio-track-c702f.firebasestorage.app",
+      messagingSenderId: "27598181344",
+      appId: "1:27598181344:web:97bf7dd2a32dbfe14ed185"
+    };
+
+    const ADMIN_ALLOWLIST = [
+      "dotcarbtrack@gmail.com",
+      "michaelreynotarte69@gmail.com",
+      "jammytanglib45@gmail.com",
+      "psychandreilopez18@gmail.com"
+    ];
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const adminWelcome = document.getElementById("adminWelcome");
+    const recentActivityList = document.getElementById("recentActivityList");
+
+    const statDaily = document.getElementById("statDaily");
+    const statPageVisits = document.getElementById("statPageVisits");
+    const statAnnouncements = document.getElementById("statAnnouncements");
+    const statFeedback = document.getElementById("statFeedback");
+
+    const authStatus = document.getElementById("authStatus");
+    const dbStatus = document.getElementById("dbStatus");
+    const lastLoginText = document.getElementById("lastLoginText");
+    const announcementCountText = document.getElementById("announcementCountText");
+
+    const announcementInput = document.getElementById("announcementInput");
+    const saveStatus = document.getElementById("saveStatus");
+    const announcementImageInput = document.getElementById("announcementImage");
+    const announcementImagePreview = document.getElementById("announcementImagePreview");
+    
+    let announcementImageData = null;
+    
+    // Image preview
+    announcementImageInput.addEventListener("change", function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          announcementImageData = event.target.result;
+          announcementImagePreview.src = announcementImageData;
+          announcementImagePreview.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    const adminNotes = document.getElementById("adminNotes");
+    const saveNotesBtn = document.getElementById("saveNotesBtn");
+    const clearNotesBtn = document.getElementById("clearNotesBtn");
+    const notesStatus = document.getElementById("notesStatus");
+
+    const feedbackList = document.getElementById("feedbackList");
+    const feedbackStatus = document.getElementById("feedbackStatus");
+
+    let siteAnnouncements = [];
+
+    function prependActivity(text, createdAt = Date.now()) {
+      const placeholder = recentActivityList.querySelector(".activity-placeholder");
+      if (placeholder) placeholder.remove();
+
+      const li = document.createElement("li");
+      
+      // Truncate long text
+      const maxLength = 100;
+      const isLong = text.length > maxLength;
+      const truncatedText = isLong ? text.substring(0, maxLength) + '...' : text;
+      
+      const textSpan = document.createElement("span");
+      textSpan.className = "activity-text";
+      textSpan.textContent = truncatedText;
+      li.appendChild(textSpan);
+      
+      // Add show more link if text is long
+      if (isLong) {
+        const showMore = document.createElement("span");
+        showMore.className = "activity-show-more";
+        showMore.textContent = "Show more";
+        showMore.setAttribute("data-full", text);
+        showMore.setAttribute("data-truncated", truncatedText);
+        showMore.style.cursor = "pointer";
+        
+        showMore.addEventListener('click', function(e) {
+          e.stopPropagation();
+          if (this.textContent.trim() === 'Show more') {
+            textSpan.textContent = this.getAttribute('data-full');
+            this.textContent = 'Show less';
+          } else {
+            textSpan.textContent = this.getAttribute('data-truncated');
+            this.textContent = 'Show more';
+          }
+        });
+        
+        li.appendChild(showMore);
+      }
+
+      const timeTag = document.createElement("span");
+      timeTag.className = "activity-time";
+      timeTag.textContent = new Date(createdAt).toLocaleString();
+
+      li.appendChild(timeTag);
+      recentActivityList.prepend(li);
+    }
+
+    function renderActivityPlaceholder() {
+      if (recentActivityList.children.length === 0) {
+        const li = document.createElement("li");
+        li.className = "activity-placeholder";
+        li.textContent = "No recent activity yet.";
+        recentActivityList.appendChild(li);
+      }
+    }
+
+    function getTotalPageVisits() {
+      let total = 0;
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith("click_")) {
+          total += parseInt(localStorage.getItem(key) || "0", 10);
+        }
+      }
+      return total;
+    }
+
+    function updateDashboardStats() {
+      statDaily.textContent = localStorage.getItem("dailyVisitors") || "0";
+      statPageVisits.textContent = getTotalPageVisits();
+      statAnnouncements.textContent = siteAnnouncements.length;
+      announcementCountText.textContent = `${siteAnnouncements.length} saved`;
+    }
+
+    function loadAnnouncements() {
+      try {
+        siteAnnouncements = JSON.parse(localStorage.getItem("siteAnnouncements") || "[]");
+      } catch (error) {
+        siteAnnouncements = [];
+      }
+
+      if (siteAnnouncements.length > 0) {
+        announcementInput.value = siteAnnouncements[0].message || "";
+      } else {
+        announcementInput.value = localStorage.getItem("siteAnnouncement") || "";
+      }
+
+      siteAnnouncements
+        .slice()
+        .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
+        .reverse()
+        .forEach((announcement) => {
+          prependActivity(`Posted new announcement: "${announcement.message}"`, announcement.createdAt || Date.now());
+        });
+
+      updateDashboardStats();
+      renderActivityPlaceholder();
+    }
+
+    function saveLastLogin(email) {
+      const now = Date.now();
+      const lastLogin = localStorage.getItem("adminLastLogin");
+      const sessionId = sessionStorage.getItem("adminSessionId");
+      
+      // Only log if this is a new session (not already logged in)
+      if (!sessionId) {
+        sessionStorage.setItem("adminSessionId", "logged_in_" + now);
+        localStorage.setItem("adminLastLogin", now);
+        lastLoginText.textContent = new Date(now).toLocaleString();
+        prependActivity(`Admin login: ${email}`, now);
+      } else {
+        // Just update the timestamp for display, don't log activity
+        localStorage.setItem("adminLastLogin", now);
+        lastLoginText.textContent = new Date(now).toLocaleString();
+      }
+    }
+
+    function loadNotes() {
+      adminNotes.value = localStorage.getItem("adminNotes") || "";
+    }
+
+    function renderEmptyFeedback() {
+      feedbackList.innerHTML = "";
+      const empty = document.createElement("div");
+      empty.className = "fb-empty";
+      empty.textContent = "No feedback yet.";
+      feedbackList.appendChild(empty);
+    }
+
+    function addFeedbackCard(data) {
+      const card = document.createElement("div");
+      card.className = "fb-card";
+
+      const msg = document.createElement("div");
+      msg.className = "fb-msg";
+      msg.textContent = (data.message || "").toString();
+
+      card.appendChild(msg);
+      feedbackList.appendChild(card);
+    }
+
+    function updateFeedbackStat(count) {
+      statFeedback.textContent = count;
+    }
+
+    function formatSavedMessage(target, message) {
+      target.textContent = message;
+      setTimeout(() => {
+        target.textContent = "";
+      }, 2500);
+    }
+
+    function startFeedbackListener() {
+      feedbackStatus.textContent = "Loading feedback...";
+
+      const fbQuery = query(
+        collection(db, "feedback"),
+        orderBy("createdAt", "desc")
+      );
+
+      onSnapshot(
+        fbQuery,
+        (snapshot) => {
+          feedbackList.innerHTML = "";
+
+          if (snapshot.empty) {
+            feedbackStatus.textContent = "";
+            dbStatus.textContent = "Connected";
+            dbStatus.className = "status-badge status-ok";
+            updateFeedbackStat(0);
+            renderEmptyFeedback();
+            return;
+          }
+
+          feedbackStatus.textContent = `Showing ${snapshot.size} feedback message(s).`;
+          dbStatus.textContent = "Connected";
+          dbStatus.className = "status-badge status-ok";
+
+          snapshot.forEach((docSnap) => {
+            addFeedbackCard(docSnap.data());
+          });
+
+          updateFeedbackStat(snapshot.size);
+        },
+        (error) => {
+          console.error(error);
+          feedbackStatus.textContent = "Failed to load feedback.";
+          dbStatus.textContent = "Error";
+          dbStatus.className = "status-badge status-warn";
+          updateFeedbackStat(0);
+          renderEmptyFeedback();
+        }
+      );
+    }
+
+    const forceLogout = async () => {
+      localStorage.removeItem("isAdminLoggedIn");
+      localStorage.removeItem("adminEmail");
+      try {
+        await signOut(auth);
+      } catch (error) {
+        // skipped
+      }
+      window.location.href = "adminlogin.html";
+    };
+
+    onAuthStateChanged(auth, (user) => {
+      const signedInEmail = user?.email?.toLowerCase() || "";
+      const isAllowedAdmin = ADMIN_ALLOWLIST.includes(signedInEmail);
+
+      if (!user || !isAllowedAdmin) {
+        authStatus.textContent = "Blocked";
+        authStatus.className = "status-badge status-warn";
+        forceLogout();
+        return;
+      }
+
+      localStorage.setItem("isAdminLoggedIn", "true");
+      localStorage.setItem("adminEmail", signedInEmail);
+
+      adminWelcome.textContent = `Logged in as ${signedInEmail}`;
+      authStatus.textContent = "Connected";
+      authStatus.className = "status-badge status-ok";
+
+      saveLastLogin(signedInEmail);
+      startFeedbackListener();
+    });
+
+    document.getElementById("adminLogoutBtn").addEventListener("click", () => {
+      forceLogout();
+    });
+
+    document.querySelectorAll(".manage-btn").forEach((button) => {
+      button.addEventListener("click", () => {
+        const targetPage = button.getAttribute("data-page");
+        const key = `click_${targetPage}`;
+        const clicks = parseInt(localStorage.getItem(key) || "0", 10);
+        localStorage.setItem(key, clicks + 1);
+
+        prependActivity(`Opened page manager: ${targetPage}`, Date.now());
+        statPageVisits.textContent = getTotalPageVisits();
+
+        window.location.href = targetPage;
+      });
+    });
+
+    document.getElementById("saveAnnouncementBtn").addEventListener("click", () => {
+      const message = announcementInput.value.trim();
+
+      if (!message) {
+        saveStatus.textContent = "Please write an announcement first.";
+        return;
+      }
+
+      const newAnnouncement = {
+        message,
+        image: announcementImageData,
+        createdAt: Date.now(),
+        createdBy: localStorage.getItem("adminEmail") || "admin"
+      };
+
+      siteAnnouncements.unshift(newAnnouncement);
+      localStorage.setItem("siteAnnouncements", JSON.stringify(siteAnnouncements));
+      localStorage.setItem("siteAnnouncement", message);
+
+      prependActivity(`Posted new announcement: "${message}"`, newAnnouncement.createdAt);
+      updateDashboardStats();
+
+      // Reset form
+      announcementInput.value = "";
+      announcementImageInput.value = "";
+      announcementImagePreview.style.display = "none";
+      announcementImageData = null;
+
+      saveStatus.textContent = "Announcement saved successfully.";
+      setTimeout(() => {
+        saveStatus.textContent = "";
+      }, 3000);
+    });
+
+    saveNotesBtn.addEventListener("click", () => {
+      localStorage.setItem("adminNotes", adminNotes.value.trim());
+      prependActivity("Updated admin notes", Date.now());
+      formatSavedMessage(notesStatus, "Notes saved successfully.");
+    });
+
+    clearNotesBtn.addEventListener("click", () => {
+      adminNotes.value = "";
+      localStorage.removeItem("adminNotes");
+      prependActivity("Cleared admin notes", Date.now());
+      formatSavedMessage(notesStatus, "Notes cleared.");
+    });
+
+    const savedLastLogin = localStorage.getItem("adminLastLogin");
+    if (savedLastLogin) {
+      lastLoginText.textContent = new Date(parseInt(savedLastLogin, 10)).toLocaleString();
+    }
+
+    // Modal handlers
+    const announcementModal = document.getElementById("announcementModal");
+    const closeAnnouncementModal = document.getElementById("closeAnnouncementModal");
+    
+    function openAnnouncementModal(announcement) {
+      document.getElementById("modalContent").textContent = announcement.message;
+      document.getElementById("modalDate").textContent = `Posted on: ${new Date(announcement.createdAt).toLocaleString()}`;
+      const modalImage = document.getElementById("modalImage");
+      if (announcement.image) {
+        modalImage.src = announcement.image;
+        modalImage.style.display = "block";
+      } else {
+        modalImage.style.display = "none";
+      }
+      announcementModal.style.display = "flex";
+    }
+    
+    closeAnnouncementModal.addEventListener("click", () => {
+      announcementModal.style.display = "none";
+    });
+    
+    announcementModal.addEventListener("click", (e) => {
+      if (e.target === announcementModal) {
+        announcementModal.style.display = "none";
+      }
+    });
+
+    loadNotes();
+    loadAnnouncements();
+    updateDashboardStats();
+  </script>
+</body>
+</html>
